@@ -213,3 +213,14 @@ jobs:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           command: pages deploy cloudflare_dist --project-name=${{ secrets.CLOUDFLARE_PROJECT_NAME }}
+      - name: 推送日报到微信
+        if: always()
+        run: |
+          curl -X POST "https://www.pushplus.plus/send" \
+            -H "Content-Type: application/json" \
+            -d '{
+              "token": "${{ secrets.PUSHPLUS_TOKEN }}",
+              "title": "📊 志愿填报找勋哥 · 舆情日报",
+              "content": "今日监控已跑完，点击查看完整日报 👉 https://ourschools.cn/yq/",
+              "template": "html"
+            }'
